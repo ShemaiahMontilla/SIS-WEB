@@ -1,0 +1,58 @@
+{%- extends "layouts/master_layout.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+{% block content %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Course</li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col  text-right">
+                <span class="float-right"><a href="{{ url_for('.add_course') }}" class="btn btn-primary">New </a></span>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>College Code</th>
+	                <th></th>
+                </tr>
+	            </thead>
+	            <tbody>
+		        {% for course in data %}
+		            <tr>
+			            <td>{{course[0]}}</td>
+			            <td>{{course[1]}}</td>
+			            <td>{{course[2]}}</td>
+
+                        <td>
+                            <a style="text-decoration: none;" href="{{ url_for('.edit',id_number = course[0]) }}">
+                                <button 
+                                class="btn btn-outline-primary rounded" 
+                                style="padding: 5px 10px 5px 10px;">Edit</button>
+                                </a>
+                            <button class="btn btn-danger btn-delete" data-course_id="{{ course[0]}}">Delete</button>
+                        </td>
+		            </tr>
+		        {% endfor %}
+	            </tbody>
+            </table>
+        </div>
+    </div>
+{%- endblock %}
+{% block scripts%}
+{{super()}}
+<script>
+    var url = "{{ url_for('.delete') }}";
+</script>
+<script src="{{ url_for('static',filename='js/course.js')}}"></script>
+{% endblock %}

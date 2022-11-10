@@ -1,0 +1,58 @@
+{%- extends "layouts/master_layout.html" %}
+
+{# Loads some of the macros included with Flask-Bootstrap. We are using the
+   utils module here to automatically render Flask's flashed messages in a
+   bootstrap friendly manner #}
+{% import "bootstrap/utils.html" as utils %}
+{% block content %}
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active" aria-current="page">Course</li>
+            </ol>
+        </nav>
+        <div class="row">
+            <div class="col  text-right">
+                <span class="float-right"><a href="{{ url_for('.add_course') }}" class="btn btn-primary">New </a></span>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>College Code</th>
+                    <th>College Name</th>
+                    
+	                <th></th>
+                </tr>
+	            </thead>
+	            <tbody>
+		        {% for college in data %}
+		            <tr>
+			            <td>{{college[0]}}</td>
+			            <td>{{college[1]}}</td>
+			        
+
+                        <td>
+                            <a style="text-decoration: none;" href="{{ url_for('.edit',id_number = college[0]) }}">
+                                <button 
+                                class="btn btn-outline-primary rounded" 
+                                style="padding: 5px 10px 5px 10px;">Edit</button>
+                                </a>
+                            <button class="btn btn-danger btn-delete" data-college_id="{{ college[0]}}">Delete</button>
+                        </td>
+		            </tr>
+		        {% endfor %}
+	            </tbody>
+            </table>
+        </div>
+    </div>
+{%- endblock %}
+{% block scripts%}
+{{super()}}
+<script>
+    var url = "{{ url_for('.delete') }}";
+</script>
+<script src="{{ url_for('static',filename='js/course.js')}}"></script>
+{% endblock %}
