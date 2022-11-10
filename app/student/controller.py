@@ -70,8 +70,16 @@ def edit(id_number):
                             form=form)
     
     elif request.method == 'POST' and form.validate():
-        student = models.Student( school_id =form.id.data,first_name = form.first_name.data, last_name = form.last_name.data,course_code = form.course_code.data,  year  =form.year.data, gender = form.gender.data)
-        student.edit(id_number)  
+        school_id =form.id.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        course_code = form.course_code.data
+        year  =form.year.data
+        gender = form.gender.data
+        cursor = mysql.connection.cursor()
+        sql = f"UPDATE student SET `school_id` = {school_id}, `first_name`='{first_name}', `last_name`='{last_name}', `course_code` ='{course_code}', `year` = '{year}' , `gender` ='{gender}' WHERE `school_id`='{id_number}' " 
+        cursor.execute(sql)
+        mysql.connection.commit()
         flash('Student info has been updated!')
         return redirect('/student')
 
