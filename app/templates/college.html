@@ -23,16 +23,16 @@
         </div>
         <input type="text" id="myInput" maxlength="30" onkeyup="myFunction()" placeholder="Search for College by College Code.." >
         <div class="row mt-2">
-            <table class="table">
-                <thead>
-                <tr>
+            <table id="myTable">
+               
+                <tr class="header">
                     <th>College Code</th>
                     <th>College Name</th>
                     
 	                <th></th>
                 </tr>
-	            </thead>
-	            <tbody>
+	           
+	           
 		        {% for college in data %}
 		            <tr>
 			            <td>{{college[0]}}</td>
@@ -49,8 +49,30 @@
                         <td><a href="college/delete/{{college[0]}}"><button onclick="return confirm('Are you sure to Delete data');" class="btn btn-danger">Delete </button> </a> </td>
 		            </tr>
 		        {% endfor %}
-	            </tbody>
             </table>
+            <script>
+                function myFunction() {
+                  // Declare variables
+                  var input, filter, table, tr, td, i, txtValue;
+                  input = document.getElementById("myInput");
+                  filter = input.value.toUpperCase();
+                  table = document.getElementById("myTable");
+                  tr = table.getElementsByTagName("tr");
+                
+                  // Loop through all table rows, and hide those who don't match the search query
+                  for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                      txtValue = td.textContent || td.innerText;
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                      } else {
+                        tr[i].style.display = "none";
+                      }
+                    }
+                  }
+                }
+                </script>
         </div>
     </div>
 {%- endblock %}
