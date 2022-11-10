@@ -11,16 +11,26 @@
                 <li class="breadcrumb-item active" aria-current="page">Student</li>
             </ol>
         </nav>
-        <div class="row">
+        <div class="row mb-5">
             <div class="col  text-right">
-                <span class="float-right"><a href="{{ url_for('.add_student') }}" class="btn btn-primary">New </a></span>
+                <span class="float-right"><a href="{{ url_for('.add_student') }}" class="btn btn-primary">Add New Student </a></span>  
             </div>
+            
+            
 
+             <a href="{{ url_for('.course') }}" class="btn btn-primary">View Courses Table </a>
+       
+            <a href="{{ url_for('.college') }}" class="btn btn-primary">View Colleges Table </a></span>
+      
+   
         </div>
+        <input type="text" id="myInput" maxlength="30" onkeyup="myFunction()" placeholder="Search for Students by School ID.." >
+      
         <div class="row mt-2">
-            <table class="table">
-                <thead>
-                <tr>
+            
+            <table id="myTable">
+                
+                <tr class = "header">
                     <th>School ID</th>
                     <th>First Name</th>
                     <th>Last Name</th>
@@ -29,8 +39,8 @@
                     <th>Gender</th>
 	                <th></th>
                 </tr>
-	            </thead>
-	            <tbody>
+	         
+	        
 		        {% for student in data %}
 		            <tr>
 			            <td>{{student[0]}}</td>
@@ -50,8 +60,31 @@
                         <td><a href="student/delete/{{student[0]}}"><button onclick="return confirm('Are you sure to Delete data');" class="btn btn-danger">Delete </button> </a> </td>
 		            </tr>
 		        {% endfor %}
-	            </tbody>
+
             </table>
+            <script>
+                function myFunction() {
+                  // Declare variables
+                  var input, filter, table, tr, td, i, txtValue;
+                  input = document.getElementById("myInput");
+                  filter = input.value.toUpperCase();
+                  table = document.getElementById("myTable");
+                  tr = table.getElementsByTagName("tr");
+                
+                  // Loop through all table rows, and hide those who don't match the search query
+                  for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                      txtValue = td.textContent || td.innerText;
+                      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                      } else {
+                        tr[i].style.display = "none";
+                      }
+                    }
+                  }
+                }
+                </script>
         </div>
     </div>
 {%- endblock %}

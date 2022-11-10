@@ -8,15 +8,20 @@
     <div class="container">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">Course</li>
+                <li class="breadcrumb-item active" aria-current="page">College</li>
             </ol>
         </nav>
         <div class="row">
             <div class="col  text-right">
-                <span class="float-right"><a href="{{ url_for('.add_course') }}" class="btn btn-primary">New </a></span>
+                <span class="float-right"><a href="{{ url_for('.add_course') }}" class="btn btn-primary">Add New College </a></span>
             </div>
+            <a href="{{ url_for('.index') }}" class="btn btn-primary">View Students Table </a>
+       
+            <a href="{{ url_for('.course') }}" class="btn btn-primary">View Courses Table </a></span>
+
 
         </div>
+        <input type="text" id="myInput" maxlength="30" onkeyup="myFunction()" placeholder="Search for College by College Code.." >
         <div class="row mt-2">
             <table class="table">
                 <thead>
@@ -35,13 +40,13 @@
 			        
 
                         <td>
-                            <a style="text-decoration: none;" href="{{ url_for('.edit',id_number = college[0]) }}">
+                            <a style="text-decoration: none;" href="college/edit/{{college[0]}}">
                                 <button 
                                 class="btn btn-outline-primary rounded" 
                                 style="padding: 5px 10px 5px 10px;">Edit</button>
                                 </a>
-                            <button class="btn btn-danger btn-delete" data-college_id="{{ college[0]}}">Delete</button>
                         </td>
+                        <td><a href="college/delete/{{college[0]}}"><button onclick="return confirm('Are you sure to Delete data');" class="btn btn-danger">Delete </button> </a> </td>
 		            </tr>
 		        {% endfor %}
 	            </tbody>
@@ -49,10 +54,3 @@
         </div>
     </div>
 {%- endblock %}
-{% block scripts%}
-{{super()}}
-<script>
-    var url = "{{ url_for('.delete') }}";
-</script>
-<script src="{{ url_for('static',filename='js/course.js')}}"></script>
-{% endblock %}
