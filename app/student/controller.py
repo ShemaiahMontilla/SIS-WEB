@@ -75,7 +75,7 @@ def edit(id_number):
         flash('Student info has been updated!')
         return redirect('/student')
 
-@student_bp.route('/course/edit/<string:course_code>', methods=['POST','GET'])
+@student_bp.route('/course/edit/<course_code>', methods=['POST','GET'])
 def edit_course(course_code):
     form = CourseForm(request.form)
     details = models.course.open(course_code)
@@ -96,6 +96,27 @@ def edit_course(course_code):
         flash('Course info has been updated!')
         return redirect('/course')
 
+@student_bp.route('/college/edit/<college_code>', methods=['POST','GET'])
+def edit_college(college_code):
+    form = CollegeForm(request.form)
+    details = models.college.open(college_code)
+    if request.method == 'GET':
+        form.college_code.data = details[0][0]    
+        form.college_name= details[0][1]
+
+
+    
+        return render_template('edit_college.html', 
+                            title = 'Update College', 
+                            college_code=college_code,
+                            form=form)
+    
+    elif request.method == 'POST' and form.validate():
+        college = models.college( college_code = form.college_code.data, college_name=  form.college_name.data)
+        college.edit(college_code)  
+        flash('Course info has been updated!')
+        return redirect('/college')
+
 @student_bp.route("/student/delete/<string:school_id>", methods=['GET','POST'])
 def delete(school_id):
     cursor = mysql.connection.cursor()
@@ -107,12 +128,21 @@ def delete(school_id):
     
     
 
-@student_bp.route("/course/delete", methods=["POST"])
+@student_bp.route("/course/delete/<string:course_code>", methods=['GET','POST'])
 def delete_course(course_code):
     cursor = mysql.connection.cursor()
     sql = f"DELETE from `course` where `course`.`course_code`= '{course_code}'"
     cursor.execute(sql)
     mysql.connection.commit()
     flash("Slot Deleted Successful","danger")
-    return redirect('course')
-       
+    return redirect('/course')
+
+@student_bp.route("/college/delete/<string:college_code>", methods=['GET','POST'])
+def delete_college(college_code):
+    cursor = mysql.connection.cursor()
+    sql = f"DELETE from `college` where `college`.`college_code`= '{college_code}'"
+    cursor.execute(sql)
+    mysql.connection.commit()
+    flash("Slot Deleted Successful","danger")
+    return redirect('/college')
+
