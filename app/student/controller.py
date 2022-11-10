@@ -70,10 +70,31 @@ def edit(id_number):
                             form=form)
     
     elif request.method == 'POST' and form.validate():
-        student = models.Student( first_name = form.first_name.data, last_name = form.last_name.data,course_code = form.course_code.data,  year  =form.year.data, gender = form.gender.data)
+        student = models.Student( school_id =form.id.data,first_name = form.first_name.data, last_name = form.last_name.data,course_code = form.course_code.data,  year  =form.year.data, gender = form.gender.data)
         student.edit(id_number)  
         flash('Student info has been updated!')
         return redirect('/student')
+
+@student_bp.route('/course/edit/<string:course_code>', methods=['POST','GET'])
+def edit_course(course_code):
+    form = CourseForm(request.form)
+    details = models.course.open(course_code)
+    if request.method == 'GET':
+        form.course_code.data = details[0][0]    
+        form.course_name.data = details[0][1]
+        form.college_code.data = details[0][2]
+
+    
+        return render_template('edit_course.html', 
+                            title = 'Update Course', 
+                            course_code=course_code,
+                            form=form)
+    
+    elif request.method == 'POST' and form.validate():
+        course = models.course( course_code = form.course_code.data, course_name=  form.course_name.data, college_code = form.college_code.data)
+        course.edit(course_code)  
+        flash('Course info has been updated!')
+        return redirect('/course')
 
 @student_bp.route("/student/delete/<string:school_id>", methods=['GET','POST'])
 def delete(school_id):
@@ -82,20 +103,16 @@ def delete(school_id):
     cursor.execute(sql)
     mysql.connection.commit()
     flash("Slot Deleted Successful","danger")
-    return redirect('student')
+    return redirect('/student')
     
     
-            
-            
-            
-            
- 
 
 @student_bp.route("/course/delete", methods=["POST"])
-def delete_course():
-    course_code = request.form['course_code']
-    if models.course.delete(course_code):
-        return jsonify(success=True,message="Successfully deleted")
-    else:
-        return jsonify(success=False,message="Failed")  
+def delete_course(course_code):
+    cursor = mysql.connection.cursor()
+    sql = f"DELETE from `course` where `course`.`course_code`= '{course_code}'"
+    cursor.execute(sql)
+    mysql.connection.commit()
+    flash("Slot Deleted Successful","danger")
+    return redirect('course')
        
