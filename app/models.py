@@ -1,5 +1,5 @@
 from app import mysql
-
+    
 
 class Student(object):
     
@@ -86,9 +86,9 @@ class college(object):
         mysql.connection.commit()
 
     @classmethod
-    def open(cls, id):
+    def open(cls, college_code):
         cursor = mysql.connection.cursor()
-        sql = f"SELECT * from college where college_code = '{id}' "
+        sql = f"SELECT * from college where college_code = '{college_code}' "
         cursor.execute(sql)
         result = cursor.fetchall()
         return result
@@ -103,10 +103,10 @@ class college(object):
         return result
 
     @classmethod
-    def delete(cls,id_number):
+    def delete(cls,college_code):
         try:
             cursor = mysql.connection.cursor()
-            sql = f"DELETE from college where college_code= '{id_number}'"
+            sql = f"DELETE from college where college_code= '{college_code}'"
             cursor.execute(sql)
             mysql.connection.commit()
             return True
@@ -152,10 +152,10 @@ class course(object):
         
 
     @classmethod
-    def delete(cls,id):
+    def delete(cls,course_code):
         try:
             cursor = mysql.connection.cursor()
-            sql = f"DELETE from course where course_code= '{id}'"
+            sql = f"DELETE from course where course_code= '{course_code}'"
             cursor.execute(sql)
             mysql.connection.commit()
             return True
