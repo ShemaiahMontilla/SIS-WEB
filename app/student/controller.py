@@ -56,6 +56,9 @@ def add_college():
 def edit(id_number):
     form = StudentForm(request.form)
     details = models.Student.open(id_number)
+    available_courses = []
+    for element in models.course.all():
+        available_courses.append(element[0])
     if request.method == 'GET':
         form.id.data = details[0][0]    
         form.first_name.data = details[0][1]
@@ -64,22 +67,11 @@ def edit(id_number):
         form.year.data = details[0][4]
         form.gender.data = details[0][5]
     
-        return render_template('edit_student.html', 
-                            title = 'Update Student', 
-                            id_number=id_number,
-                            form=form)
+        return render_template('edit_student.html', form = form ,title = 'Edit Student')
     
     elif request.method == 'POST' and form.validate():
-        school_id =form.id.data
-        first_name = form.first_name.data
-        last_name = form.last_name.data
-        course_code = form.course_code.data
-        year  =form.year.data
-        gender = form.gender.data
-        cursor = mysql.connection.cursor()
-        sql = f"UPDATE student SET `school_id` = {school_id}, `first_name`='{first_name}', `last_name`='{last_name}', `course_code` ='{course_code}', `year` = '{year}' , `gender` ='{gender}' WHERE `school_id`='{id_number}' " 
-        cursor.execute(sql)
-        mysql.connection.commit()
+        Student = models.Student(first_name=form.first_name.data, last_name=form.last_name.data, course_code=form.course_code.data, year=form.year.data, gender=form.gender.data)
+        Student.edit(id_number)
         flash('Student info has been updated!')
         return redirect('/student')
 
@@ -87,19 +79,20 @@ def edit(id_number):
 def edit_course(course_code):
     form = CourseForm(request.form)
     details = models.course.open(course_code)
+    available_colleges = []
+    for element in models.college.all():
+         available_colleges.append(element[0])
+
     if request.method == 'GET':
         form.course_code.data = details[0][0]    
         form.course_name.data = details[0][1]
         form.college_code.data = details[0][2]
 
     
-        return render_template('edit_course.html', 
-                            title = 'Update Course', 
-                            course_code=course_code,
-                            form=form)
+        return render_template('edit_course.html',  form = form, title = 'Edit Course')
     
     elif request.method == 'POST' and form.validate():
-        course = models.course( course_code = form.course_code.data, course_name=  form.course_name.data, college_code = form.college_code.data)
+        course = models.course(  course_name=  form.course_name.data, college_code = form.college_code.data)
         course.edit(course_code)  
         flash('Course info has been updated!')
         return redirect('/course')
