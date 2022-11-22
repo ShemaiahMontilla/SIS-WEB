@@ -1,18 +1,53 @@
+{% extends "layouts/master_layout.html" %}
+
 {% import "bootstrap/wtf.html" as wtf %}
-{%- extends "layouts/master_layout.html" %}
+
 {% block content %}
-<div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ url_for('.college') }}">Course</a>
-                </li>
-            </ol>
-        </nav>
-        <div class="row">
-            <div class="col">
-                {{ wtf.quick_form(form, "/college/edit/{{college_code}}","post") }}
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+               <div class="col">
+                  <h3 class="page-title">Edit College</h3>
+                  <ul class="breadcrumb">
+                     <li class="breadcrumb-item"><a href="{{ url_for('.course') }}">Courses</a></li>
+                     <li class="breadcrumb-item active">Edit College</li>
+                  </ul>
+               </div>
             </div>
-        </div>
+         </div>
+         <form  method="POST" >
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+         <div class="row">
+            <div class="col-sm-12">
+               <div class="card">
+                  <div class="card-body">
+                     <div class="row">
+                        <div class="col-12">
+                        <h5 class="form-title"><span>College Details</span></h5>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                        <div class="form-group">
+                        <label>College Code</label>
+                        {{ form.college_code(class_="form-control") }}
+                     </div>
+                        </div>
+
+                        <div class="col-12">
+                        <div class="form-group">
+                        <label>College Name</label>
+                        {{ form.college_name(class_="form-control") }}
+                     </div>
+                        </div>
+                        <div class="col-12">
+                           {{ form.submit(class_="btn btn-primary" , style_="font-size: 1.5rem") }}
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </form>
+         </div>
+      </div>
 </div>
-{%- endblock %}
+{% endblock %}

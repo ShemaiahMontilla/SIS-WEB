@@ -1,18 +1,78 @@
+{% extends "layouts/master_layout.html" %}
+
 {% import "bootstrap/wtf.html" as wtf %}
-{%- extends "layouts/master_layout.html" %}
+
 {% block content %}
-<div class="container">
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active" aria-current="page">
-                    <a href="{{ url_for('.index') }}">Student</a>
-                </li>
-            </ol>
-        </nav>
-        <div class="row">
+<div class="page-wrapper">
+   <div class="content container-fluid">
+      <div class="page-header">
+         <div class="row align-items-center">
             <div class="col">
-                {{ wtf.quick_form(form, "/student/edit/{{id_number}}","post") }}
+               <h3 class="page-title">Edit Student</h3>
+               <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="{{ url_for('.index') }}">Students</a></li>
+                  <li class="breadcrumb-item active">Edit Student</li>
+               </ul>
             </div>
-        </div>
+         </div>
+      </div>
+      <div class="row">
+      <form  method="POST" >
+         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+         <div class="col-sm-12">
+            <div class="card">
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col-12">
+                        <h5 class="form-title"><span>Student Information</span></h5>
+                     </div>
+                    
+                     <div class = "col" style="width: 680px">
+                     <div class="col-12">
+                        <div class="form-group">
+                           <label>Student Id</label>
+                           {{ form.id(class_="validate form-control") }}
+                        </div>
+                     </div>
+                     <div class="col-12 ">
+                           <div class="form-group">
+                              <label>Year</label>
+                              {{ form.year(class_="validate form-control") }}
+                           </div>   
+                     </div>
+                     <div class="col-12 ">
+                        <div class="form-group">
+                           <label>First Name</label>
+                           {{ form.first_name(class_=" validate form-control") }}
+                        </div>
+                     </div>
+                     <div class="col-12 ">
+                        <div class="form-group">
+                           <label>Last Name</label>
+                           {{ form.last_name(class_="form-control") }}
+                        </div>
+                     </div>
+                     <div class="col-12 ">
+                        <div class="form-group">
+                           <label>Course</label>
+                           {{ form.course_code(class_=" validate form-control") }}
+                        </div>
+                     </div>
+                     <div class="col-12">
+                           <label>Gender</label>
+                           {{ form.gender(class_= 'validate' ,style_="margin-left: 2.5rem") }}
+                     </div>
+                     <div class="col-12">
+                        {{ form.submit(class_=" validate btn btn-primary" , style_="font-size: 1.5rem; margin-left: 60rem") }}
+                     </div>
+                   </div>
+                  </div>
+               </div>
+            </div>
+            </div>
+         </div>
+      </form>
+      </div>
+   </div>
 </div>
-{%- endblock %}
+{% endblock %}
