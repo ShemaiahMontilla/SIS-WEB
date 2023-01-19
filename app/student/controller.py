@@ -103,7 +103,7 @@ def edit_college(college_code):
     details = models.college.open(college_code)
     if request.method == 'GET':
         form.college_code.data = details[0][0]    
-        form.college_name= details[0][1]
+        form.college_name.data= details[0][1]
 
 
     
