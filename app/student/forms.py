@@ -6,7 +6,7 @@ class StudentForm(FlaskForm):
     id = StringField ('ID Number', [validators.DataRequired(), validators.Length(min=9, max=9)])
     first_name = StringField('First Name', [validators.DataRequired(), validators.Length(min=3)])
     last_name = StringField('Last Name', [validators.DataRequired(), validators.Length(min=3)])
-    course_code = SelectField('Course', [validators.DataRequired()], choices = ['AB PolSci','BSA','BSCA','BSCE','BSCS','BSEE', 'BSIS', 'BSIT', 'BSStat'])
+    course_code = SelectField('Course', [validators.DataRequired()], choices = ['AB PolSci','BSA','BSCA','BSCE','BSCS','BSEE', 'BSIS', 'BSIT', 'BSStat', 'CCCC'])
     year = SelectField('Year', [validators.DataRequired()], choices = ['1','2','3','4','5','Irregular'])
     gender = RadioField('Gender', [validators.DataRequired()], choices = ['Female', 'Male'])
     submit = SubmitField("Submit")
